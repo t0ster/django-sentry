@@ -50,6 +50,11 @@ CLIENT = 'sentry.client.base.SentryClient'
 
 NAME = socket.gethostname()
 
+INSTALLED_APPS = (
+    'sentry',
+    'sentry.client'
+)
+
 # We allow setting the site name either by explicitly setting it with the
 # SENTRY_SITE setting, or using the django.contrib.sites framework for
 # fetching the current site. Since we can't reliably query the database
@@ -81,8 +86,6 @@ EMAIL_SUBJECT_PREFIX = ''
 INTERNAL_IPS = set()
 
 SERVER_EMAIL = 'root@localhost'
-
-LOGIN_URL = None
 
 # Automatically log frame stacks from all ``logging`` messages.
 AUTO_LOG_STACKS = False

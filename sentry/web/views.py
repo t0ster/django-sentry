@@ -32,16 +32,13 @@ def iter_data(obj):
             continue
         yield k, v
 
-def render_to_response(template, context={}, status=200):
+def render_to_response(template, context={}):
     from django.shortcuts import render_to_response
 
     context.update({
         'has_search': bool(settings.SEARCH_ENGINE),
     })
-
-    response = render_to_response(template, context)
-    response.status_code = status
-    return response
+    return render_to_response(template, context)
 
 def get_search_query_set(query):
     from haystack.query import SearchQuerySet
@@ -69,9 +66,9 @@ def login_required(func):
     def wrapped(request, *args, **kwargs):
         if not settings.PUBLIC:
             if not request.user.is_authenticated():
-                return HttpResponseRedirect(settings.LOGIN_URL or reverse('sentry-login'))
+                return HttpResponseRedirect(reverse('sentry-login'))
             if not request.user.has_perm('sentry.can_view'):
-                return render_to_response('sentry/missing_permissions.html', status=400)
+                return HttpResponseRedirect(reverse('sentry-login'))
         return func(request, *args, **kwargs)
     wrapped.__doc__ = func.__doc__
     wrapped.__name__ = func.__name__
